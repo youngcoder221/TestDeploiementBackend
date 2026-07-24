@@ -9,12 +9,18 @@ const pool = mysql.createPool({
   database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
+
+  ssl: process.env.DB_SSL === "true"
+    ? {
+        rejectUnauthorized: true,
+      }
+    : undefined,
 });
 
 const db = pool.promise();
 
 db.getConnection()
-  .then(() => console.log("MySQL connecte avec succes"))
+  .then(() => console.log("MySQL connecté avec succès"))
   .catch((err) => console.error("Erreur MySQL :", err.message));
 
 module.exports = db;
